@@ -26,22 +26,28 @@ PROJECT.md / LESSONS.md
 
 ## 最快使用
 
-### 方法一：把压缩包交给 AI
+### 方法一：直接把仓库 ZIP 交给 AI
 
-下载 `dist/project-continuity-kit.zip`，上传到新项目的 AI 对话，然后发送：
+在 GitHub 点击 `Code → Download ZIP`，把下载的仓库 ZIP 上传给新项目的 AI，然后发送：
 
 ```text
-解压并阅读这个项目连续性包。先执行 project-bootstrap，结合当前仓库和我的需求建立 AGENTS.md 与 PROJECT.md；不要覆盖已有文档，不要修改业务代码。完成后告诉我当前事实、未知项和下一步。
+阅读 INSTALL_PROMPT.md 和 kit/skills/project-bootstrap/SKILL.md。把 kit 安装或合并到当前项目；先建立 AGENTS.md 与 PROJECT.md，不覆盖已有文档，不修改业务代码。完成后告诉我当前事实、未知项和下一步。
 ```
 
-### 方法二：克隆母包后安装
+### 方法二：生成精简包
 
 Windows PowerShell：
 
 ```powershell
 git clone https://github.com/CyberMist123/vibe-coding-skill.git
 Set-Location .\vibe-coding-skill
-.\install.ps1 -TargetPath "D:\path\to\your-project" -ProjectName "My Project"
+.\build-package.ps1
+```
+
+生成：
+
+```text
+dist\project-continuity-kit.zip
 ```
 
 macOS / Linux：
@@ -49,10 +55,25 @@ macOS / Linux：
 ```bash
 git clone https://github.com/CyberMist123/vibe-coding-skill.git
 cd vibe-coding-skill
+chmod +x build-package.sh install.sh
+./build-package.sh
+```
+
+### 方法三：直接安装到本地项目
+
+Windows：
+
+```powershell
+.\install.ps1 -TargetPath "D:\path\to\your-project" -ProjectName "My Project"
+```
+
+macOS / Linux：
+
+```bash
 ./install.sh /path/to/your-project "My Project"
 ```
 
-安装脚本默认只复制缺失文件，不覆盖目标项目已有的 `AGENTS.md`、`PROJECT.md` 或 Skill。已有文件应由 AI 按 `INSTALL_PROMPT.md` 合并。
+安装脚本默认只复制缺失文件，不覆盖目标项目已有的 `AGENTS.md`、`PROJECT.md` 或 Skill。已有文件应由 AI 按 `INSTALL_PROMPT.md` 合并。只有显式使用 `-Force` / `--force` 才会覆盖。
 
 ## 日常怎么对 AI 说
 
@@ -79,7 +100,7 @@ kit/
 - `project-bootstrap`：首次加入旧项目或新项目时，建立当前事实，不重写业务代码。
 - `project-doc-sync`：功能、架构或接口变化后，纠正文档中的当前事实。
 - `project-closeout`：阶段或项目结束时，冻结最终状态并提取可迁移经验。
-- `LESSONS.md`：母包积累的跨项目经验，只收录真实项目验证过的规律。
+- `LESSONS.md`：母包积累的跨项目经验，只收录真实项目或源码审计支持的规律。
 
 ## 状态语言
 
@@ -96,3 +117,5 @@ kit/
 ## 维护原则
 
 这个仓库是母包，不保存具体项目的私密内容。项目结束后，通过 `project-closeout` 生成一段“可迁移经验”，再由维护者审核并写入 `LESSONS.md`。不要把项目路径、密钥、用户数据或一次性事故原样搬进母包。
+
+母包本身也使用 `AGENTS.md + PROJECT.md` 管理。未来修改模板、Skill、安装接口或经验库时，同样必须同步当前事实，避免母包自己变成另一套文档屎山。
