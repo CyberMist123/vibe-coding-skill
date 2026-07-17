@@ -13,7 +13,7 @@ try {
   New-Item -ItemType Directory -Force -Path $packageRoot, $dist | Out-Null
 
   Copy-Item -LiteralPath ".\kit" -Destination $packageRoot -Recurse -Force
-  Copy-Item -LiteralPath ".\INSTALL_PROMPT.md", ".\LESSONS.md", ".\README.md", ".\install.ps1", ".\install.sh" -Destination $packageRoot -Force
+  Copy-Item -LiteralPath ".\INSTALL_PROMPT.md", ".\LESSONS.md", ".\README.md", ".\VERSION", ".\install.ps1", ".\install.sh" -Destination $packageRoot -Force
 
   if (Test-Path -LiteralPath $zipPath) {
     Remove-Item -LiteralPath $zipPath -Force
@@ -22,8 +22,10 @@ try {
   Compress-Archive -Path $packageRoot -DestinationPath $zipPath -CompressionLevel Optimal
 
   $hash = Get-FileHash -LiteralPath $zipPath -Algorithm SHA256
+  $version = (Get-Content -LiteralPath ".\VERSION" -Raw).Trim()
   Write-Host "Package created:" -ForegroundColor Green
   Write-Host $zipPath
+  Write-Host "Version: $version"
   Write-Host "SHA256: $($hash.Hash.ToLowerInvariant())"
 } finally {
   Remove-Item -LiteralPath $staging -Recurse -Force -ErrorAction SilentlyContinue
