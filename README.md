@@ -59,6 +59,8 @@ chmod +x build-package.sh install.sh
 ./build-package.sh
 ```
 
+构建脚本会同时输出母包版本和 ZIP 的 SHA256。精简包内包含 `VERSION`，拿到旧 ZIP 时可以先确认版本，不必猜它是否已经过期。
+
 ### 方法三：直接安装到本地项目
 
 Windows：
@@ -88,13 +90,20 @@ macOS / Linux：
 ## 包含内容
 
 ```text
-kit/
-├─ AGENTS.md
-├─ PROJECT.md
-└─ skills/
-   ├─ project-bootstrap/SKILL.md
-   ├─ project-doc-sync/SKILL.md
-   └─ project-closeout/SKILL.md
+project-continuity-kit/
+├─ VERSION
+├─ README.md
+├─ INSTALL_PROMPT.md
+├─ LESSONS.md
+├─ install.ps1
+├─ install.sh
+└─ kit/
+   ├─ AGENTS.md
+   ├─ PROJECT.md
+   └─ skills/
+      ├─ project-bootstrap/SKILL.md
+      ├─ project-doc-sync/SKILL.md
+      └─ project-closeout/SKILL.md
 ```
 
 - `project-bootstrap`：首次加入旧项目或新项目时，建立当前事实，不重写业务代码。
