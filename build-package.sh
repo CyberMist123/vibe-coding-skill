@@ -23,7 +23,7 @@ with tempfile.TemporaryDirectory(prefix="project-continuity-kit-") as temp_dir:
     package_root.mkdir(parents=True)
 
     shutil.copytree(root / "kit", package_root / "kit")
-    for name in ["INSTALL_PROMPT.md", "LESSONS.md", "README.md", "install.ps1", "install.sh"]:
+    for name in ["INSTALL_PROMPT.md", "LESSONS.md", "README.md", "VERSION", "install.ps1", "install.sh"]:
         shutil.copy2(root / name, package_root / name)
 
     if zip_path.exists():
@@ -35,6 +35,8 @@ with tempfile.TemporaryDirectory(prefix="project-continuity-kit-") as temp_dir:
                 archive.write(path, Path("project-continuity-kit") / path.relative_to(package_root))
 
 sha256 = hashlib.sha256(zip_path.read_bytes()).hexdigest()
+version = (root / "VERSION").read_text(encoding="utf-8").strip()
 print(f"Package created: {zip_path}")
+print(f"Version: {version}")
 print(f"SHA256: {sha256}")
 PY
